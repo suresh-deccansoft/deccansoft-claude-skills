@@ -7,6 +7,8 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { queryClient } from "./query-client";
 import { router } from "./router";
+// The single stylesheet — decision #15 (Tailwind v4, no CSS modules/CSS-in-JS).
+import "./styles.css";
 
 // The only place this app touches env directly and constructs its own
 // ApiClient — see reference/architecture-decisions.md #4 and #6.

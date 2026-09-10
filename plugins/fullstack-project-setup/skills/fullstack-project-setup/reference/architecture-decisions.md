@@ -301,3 +301,46 @@ platform or the other.
 - Enforcement: pnpm warns/errors on unmet peer-dependency ranges at
   `pnpm install` time automatically — this is the backstop, not something
   anyone has to remember to check by hand.
+
+## 15. Styling: Tailwind CSS (web) + NativeWind (native)
+
+**The gap:** decision 3 makes UI a per-platform concern but never picked a
+styling vocabulary per platform. Left open, agents mix ad-hoc inline
+`style` objects, loose CSS files, and CSS-in-JS differently on every
+screen — inconsistent, unreviewable diffs, and the same visual system
+re-derived twice from scratch.
+
+**Decision:** Tailwind class syntax is the single styling vocabulary on
+both platforms.
+
+- `apps/web`: Tailwind CSS v4 via the `@tailwindcss/vite` plugin — utility
+  classes in JSX. No CSS modules, no styled-components/Emotion. One
+  stylesheet, `src/styles.css` containing `@import "tailwindcss";`,
+  imported once in `main.tsx`.
+- `apps/native`: NativeWind — the same class syntax compiled to native
+  styles. The wiring ships in the templates: `babel.config.js`
+  (`babel-preset-expo` with `jsxImportSource: "nativewind"` +
+  `nativewind/babel`), `metro.config.js` (`withNativeWind`),
+  `tailwind.config.js` built on `nativewind/preset`, a `nativewind-env.d.ts`
+  for the `className` types, and one `global.css` imported in `index.ts` —
+  the app entry, which also `registerRootComponent`s `App`.
+- Components still get written twice (decision 3 stands), but the class
+  names transfer between web and native — that's the whole point: one
+  styling system, two render targets.
+- Tailwind versions diverge per platform on purpose (decision 14): web runs
+  the v4 line, native runs the v3 line NativeWind v4 is built against.
+  Never hoist `tailwindcss` to the workspace root; pnpm resolves each app's
+  pin independently.
+- Shared packages never import either: no className logic, no style
+  objects, no tailwind imports in `packages/*`.
+
+**Not a contradiction of the rejection in decision 3:** that rejection was
+of *universal-UI code sharing* (NativeWind + Solito/RN Web to share one UI
+tree). Here NativeWind is only the native app's styling DX inside its own
+presentational layer — the two-rendering-targets model is untouched.
+
+**Templates carrying this:** `apps/web/{package.json, vite.config.ts,
+src/styles.css, src/main.tsx, src/routes/todos.tsx}` and
+`apps/native/{package.json, babel.config.js, metro.config.js,
+tailwind.config.js, global.css, index.ts, nativewind-env.d.ts,
+screens/TodosScreen.tsx}`.

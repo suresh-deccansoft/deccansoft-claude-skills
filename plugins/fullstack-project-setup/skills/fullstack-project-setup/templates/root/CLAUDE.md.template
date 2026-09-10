@@ -70,6 +70,14 @@ failing check.
 10. **Migrations go through Alembic**, always. Never modify the DB schema
     by hand, and never edit a migration that's already been applied/merged
     — write a new one.
+11. **Styling is Tailwind classes on both platforms.** `apps/web` uses
+    Tailwind CSS (v4, `@tailwindcss/vite` — no CSS modules, no
+    styled-components/Emotion); `apps/native` uses NativeWind (`className`
+    on native components — no `StyleSheet.create`/inline style objects for
+    layout; a one-off dynamic value is the exception). Same class
+    vocabulary on both, different markup (see rule 2). Shared packages
+    never style anything. Native setup (babel/metro/tailwind config,
+    `global.css`) is already wired — don't add another styling library.
 
 ## Full rationale
 

@@ -10,6 +10,11 @@ import { Button, FlatList, Text, TextInput, View } from "react-native";
  * there's no adapter here, just the shared hook. Presentation is native UI
  * (FlatList, TextInput) instead of HTML; the data/business logic is
  * byte-for-byte the same code as web.
+ *
+ * Styling is Tailwind classes via NativeWind (`className`) — decision #15,
+ * same class vocabulary as apps/web/src/routes/todos.tsx. No
+ * StyleSheet.create / inline style objects for layout (a one-off dynamic
+ * value is the exception).
  */
 export function TodosScreen() {
   const { data: todos = [], isLoading, error } = useTodos();
@@ -18,12 +23,21 @@ export function TodosScreen() {
 
   if (error) {
     // Same ApiError shape as web — only the presentation differs.
-    return <Text accessibilityRole="alert">Couldn't load todos: {error.message}</Text>;
+    return (
+      <Text className="p-4 text-red-600" accessibilityRole="alert">
+        Couldn't load todos: {error.message}
+      </Text>
+    );
   }
 
   return (
-    <View>
-      <TextInput value={title} onChangeText={setTitle} placeholder="New todo" />
+    <View className="flex-1 p-4">
+      <TextInput
+        value={title}
+        onChangeText={setTitle}
+        placeholder="New todo"
+        className="mb-2 rounded-lg border border-gray-300 px-3 py-2"
+      />
       <Button
         title="Add"
         disabled={createTodo.isPending}
@@ -32,12 +46,13 @@ export function TodosScreen() {
           setTitle("");
         }}
       />
-      {isLoading && <Text>Loading…</Text>}
+      {isLoading && <Text className="text-gray-500 mt-2">Loading…</Text>}
       <FlatList
+        className="mt-2"
         data={todos}
         keyExtractor={(todo) => todo.id}
         renderItem={({ item }) => (
-          <Text>
+          <Text className="border-b border-gray-200 py-2">
             {item.title} {canCompleteTodo(item) ? "" : "(done)"}
           </Text>
         )}

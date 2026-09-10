@@ -1,8 +1,9 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [tailwindcss(), react()],
   test: {
     // Vitest for web + shared packages — decision #10. Jest is scoped to
     // apps/native only; do not add a jest config here.

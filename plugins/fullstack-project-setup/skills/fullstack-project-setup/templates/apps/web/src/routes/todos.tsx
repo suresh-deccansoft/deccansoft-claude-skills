@@ -31,25 +31,36 @@ export function TodosPage() {
     return <p role="alert">Couldn't load todos: {error.message}</p>;
   }
 
+  // Styling is Tailwind classes — decision #15. Same class vocabulary as
+  // apps/native/screens/TodosScreen.tsx (via NativeWind), different markup.
   return (
-    <main>
-      <h1>Todos</h1>
+    <main className="mx-auto max-w-xl p-4">
+      <h1 className="text-2xl font-bold mb-4">Todos</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           createTodo.mutate({ title });
           setTitle("");
         }}
+        className="flex gap-2 mb-4"
       >
-        <input value={title} onChange={(e) => setTitle(e.target.value)} />
-        <button type="submit" disabled={createTodo.isPending}>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2"
+        />
+        <button
+          type="submit"
+          disabled={createTodo.isPending}
+          className="rounded-lg bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+        >
           Add
         </button>
       </form>
-      {isLoading && <p>Loading…</p>}
-      <ul>
+      {isLoading && <p className="text-gray-500">Loading…</p>}
+      <ul className="divide-y divide-gray-200">
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.id} className="py-2">
             {todo.title} {canCompleteTodo(todo) ? "" : "(done)"}
           </li>
         ))}

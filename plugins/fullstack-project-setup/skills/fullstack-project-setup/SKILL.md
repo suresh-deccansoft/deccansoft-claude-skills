@@ -26,7 +26,7 @@ drift apart. Full rationale and the honest self-checks/risks for every
 decision live in `reference/architecture-decisions.md`; read that before
 changing anything, not just this summary.
 
-**Last verified:** 2026-09-09. Pinned tool versions live inline in the
+**Last verified:** 2026-09-10. Pinned tool versions live inline in the
 `templates/` files themselves (`package.json`, `pyproject.toml`) — check
 those are still current major versions before scaffolding a new project;
 static templates go stale silently otherwise.
@@ -134,6 +134,17 @@ static templates go stale silently otherwise.
       not a reason to compromise the shared-package boundary.
     - Enforcement: pnpm warns/errors on unmet peer-dependency ranges at
       `pnpm install` time automatically — the backstop, not a manual check.
+
+15. **Styling:** Tailwind class syntax is the single styling vocabulary on
+    both platforms — **Tailwind CSS (v4, `@tailwindcss/vite`) in
+    `apps/web`, NativeWind in `apps/native`**. No CSS modules, no
+    styled-components/Emotion on web; no ad-hoc `StyleSheet.create` or
+    inline `style` objects for layout in native screens (a one-off dynamic
+    value is the exception). Shared packages never style anything. The
+    native setup (babel/metro/tailwind config, `global.css`) ships wired in
+    `templates/apps/native/`. Tailwind majors diverge per platform (web v4,
+    native v3, which NativeWind v4 is built against) — that's decision #14,
+    not a bug to unify.
 
 ## When invoked (scaffolding a new project)
 
