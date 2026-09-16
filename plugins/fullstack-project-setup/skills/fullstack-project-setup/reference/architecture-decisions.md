@@ -344,3 +344,23 @@ src/styles.css, src/main.tsx, src/routes/todos.tsx}` and
 `apps/native/{package.json, babel.config.js, metro.config.js,
 tailwind.config.js, global.css, index.ts, nativewind-env.d.ts,
 screens/TodosScreen.tsx}`.
+
+## 16. Backend architecture standardization: ArchUnitPython
+
+**Problem it solves:** Nx's `enforce-module-boundaries` ESLint rule strictly protects the JS/TS side of the monorepo from architectural decay, but the Python backend previously had no mechanical structural enforcement. As projects grow or AI agents generate code without architectural memory, several regressions routinely occur:
+1. **Dependency cycles:** circular imports between modules that break runtime loading or obscure coupling.
+2. **Layer boundary leaks:** cross-cutting infrastructure (`app/core/`, db sessions, auth, config) accidentally importing domain feature internals (`app/features/`), or domain feature slices tightly coupling to other slices instead of using public APIs.
+3. **Monolithic file creep:** the 1000-line limit was checked via an ad-hoc pre-commit script (`scripts/check_file_length.py`), disconnected from the test suite and diagnostics.
+
+**Decision:** Standardize backend architecture testing with **ArchUnitPython** (`archunitpython`), executed natively as part of `pytest` (`backend/tests/test_architecture.py`).
+
+**Enforced rules:**
+- **Zero cycles:** `project_files("app/").should().have_no_cycles()` ensures no circular dependencies exist across the application.
+- **Layer boundary integrity:** `project_files("app/").in_folder("**/core/**").should_not().depend_on_files().in_folder("**/features/**")` guarantees core infrastructure never depends on feature implementations.
+- **Unified code metric enforcement:** `metrics("app/").count().lines_of_code().should_be_below(1000)` enforces the 1000-line hard limit directly as a pytest assertion, producing detailed failure reports when exceeded.
+- **Architecture visualization:** Export dependency graphs as Mermaid (`reports/dependency-graph.mmd`) and HTML during CI.
+
+**Rejected:** Custom regex/ast import scripts (fragile, high maintenance, AST-blind edge cases); manual PR review alone (fails against rapid AI-driven development).
+
+**Templates carrying this:** `backend/pyproject.toml`, `backend/tests/test_architecture.py`, `root/.pre-commit-config.yaml`, `root/.github/workflows/ci.yml`.
+

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "fullstack-render-web-setup",
+  "version": "1.0.0",
+  "description": "Scaffold a new full-stack project tailored for Render deployment and modern web: Python/FastAPI + async SQLAlchemy 2.0 + Alembic + Render Managed PostgreSQL backend, React/Next.js web frontend in an Nx + pnpm monorepo, with ArchUnitPython architecture standardization, 80% test-coverage gate, RFC 7807 error contract, and Render Blueprint.",
+  "author": {
+    "name": "Deccansoft AI Team",
+    "email": "aiteam@deccansoft.net"
+  },
+  "homepage": "https://github.com/DeccansoftAITeam/deccansoft-claude-skills",
+  "repository": "https://github.com/DeccansoftAITeam/deccansoft-claude-skills",
+  "license": "MIT",
+  "keywords": ["fastapi", "nextjs", "react", "render", "archunitpython", "monorepo", "nx", "pnpm", "alembic", "postgresql", "scaffold", "project-setup"]
+}

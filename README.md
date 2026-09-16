@@ -1,12 +1,14 @@
 # Deccansoft Claude Code plugins
 
 A Claude Code [plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces). Currently
-ships two plugins:
+ships three plugins:
 
 - [`openclaw-azure`](#openclaw-azure--deploy-openclaw-to-azure-container-apps) — deploy OpenClaw to
   Azure Container Apps.
 - [`fullstack-project-setup`](#fullstack-project-setup--scaffold-a-fastapi--react--react-native-monorepo)
-  — scaffold a new FastAPI + React + React Native monorepo on our locked architecture.
+  — scaffold a new FastAPI + React + React Native monorepo on our locked architecture with ArchUnitPython.
+- [`fullstack-render-web-setup`](#fullstack-render-web-setup--scaffold-a-fastapi--web-monorepo-for-render)
+  — scaffold a FastAPI + Web monorepo tailored for Render deployment.
 
 ## `openclaw-azure` — deploy OpenClaw to Azure Container Apps
 
@@ -102,15 +104,30 @@ Then just ask Claude to "set up a new project" (FastAPI + React + React Native) 
   decision including rejected alternatives
   ([`reference/architecture-decisions.md`](plugins/fullstack-project-setup/skills/fullstack-project-setup/reference/architecture-decisions.md)),
   and the real boilerplate it scaffolds from (`templates/`): Nx + pnpm root config, a working `todos`
-  vertical slice end-to-end, enforced module boundaries, the pre-push + CI 80% coverage gate, the
-  1000-line file-length lint rule, an RFC7807 error contract on both sides, and a generated
-  `CLAUDE.md` so a future session in that repo still knows the architecture without anyone
-  re-invoking the skill.
+  vertical slice end-to-end, enforced module boundaries, the pre-push + CI 80% coverage gate,
+  **ArchUnitPython architecture standardization** (zero cycles, layer boundaries, and 1000-line limit),
+  an RFC7807 error contract on both sides, and a generated `CLAUDE.md`.
+
+## `fullstack-render-web-setup` — scaffold a FastAPI + Web monorepo for Render
+
+Scaffolds a production-ready full-stack web project specifically configured for **Render.com** deployment:
+
+- **Stack:** Python/FastAPI + async SQLAlchemy 2.0 + Alembic + Render Managed PostgreSQL (`pgvector`, `pgcrypto`) backend; React / Next.js web frontend in an Nx + pnpm monorepo.
+- **Web-Only:** Completely eliminates React Native / Expo / Metro dependencies and mobile overhead.
+- **ArchUnitPython Guardrails:** Layer boundary validation (`app.core` isolated from `app.features`), circular dependency detection, and 1000-line metric gates run as native pytest tests.
+- **Render Blueprint:** Includes `render.yaml` defining frontend web service, FastAPI web service, and managed database out of the box.
+
+### Install
+
+```shell
+/plugin marketplace add DeccansoftAITeam/deccansoft-claude-skills
+/plugin install fullstack-render-web-setup@deccansoft-claude-plugins
+```
 
 ### Support
 
 Questions, issues, or feature requests: **aiteam@deccansoft.net**, or open an issue at
-https://github.com/suresh-deccansoft/deccansoft-claude-skills/issues.
+https://github.com/DeccansoftAITeam/deccansoft-claude-skills/issues.
 
 ### License
 

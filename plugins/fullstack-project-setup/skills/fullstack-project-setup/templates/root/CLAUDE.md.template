@@ -78,6 +78,11 @@ failing check.
     vocabulary on both, different markup (see rule 2). Shared packages
     never style anything. Native setup (babel/metro/tailwind config,
     `global.css`) is already wired — don't add another styling library.
+12. **Backend architecture standardization with ArchUnitPython:** Architecture
+    rules live in `backend/tests/test_architecture.py` and execute with
+    `pytest`. Enforces zero circular dependencies, strict layer boundaries
+    (`app/core` must not depend on `app/features`), and metric-based file size
+    limits (<1000 lines).
 
 ## Full rationale
 

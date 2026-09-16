@@ -17,9 +17,16 @@
     {
       "name": "fullstack-project-setup",
       "source": "./plugins/fullstack-project-setup",
-      "description": "Scaffold a new full-stack project on our locked architecture: Python/FastAPI + async SQLAlchemy + Alembic + Azure PostgreSQL backend, React + React Native frontend sharing 90-100% of business logic in an Nx + pnpm monorepo, with enforced module boundaries, an 80% coverage gate, a 1000-line-per-file limit, an RFC7807 error contract, and a generated CLAUDE.md.",
+      "description": "Scaffold a new full-stack project on our locked architecture: Python/FastAPI + async SQLAlchemy + Alembic + Azure PostgreSQL backend, React + React Native frontend sharing 90-100% of business logic in an Nx + pnpm monorepo, with enforced module boundaries, an 80% coverage gate, ArchUnitPython architecture testing, a 1000-line-per-file limit, an RFC7807 error contract, and a generated CLAUDE.md.",
       "category": "scaffolding",
-      "keywords": ["fastapi", "react", "react-native", "monorepo", "nx", "pnpm", "alembic", "postgresql", "azure", "scaffold", "project-setup"]
+      "keywords": ["fastapi", "react", "react-native", "monorepo", "nx", "pnpm", "alembic", "postgresql", "azure", "archunitpython", "scaffold", "project-setup"]
+    },
+    {
+      "name": "fullstack-render-web-setup",
+      "source": "./plugins/fullstack-render-web-setup",
+      "description": "Scaffold a new full-stack project tailored for Render deployment and modern web: Python/FastAPI + async SQLAlchemy 2.0 + Alembic + Render Managed PostgreSQL backend, React / Next.js web frontend in an Nx + pnpm monorepo, with ArchUnitPython architecture standardization, an 80% coverage gate, RFC 7807 error contract, and Render Blueprint.",
+      "category": "scaffolding",
+      "keywords": ["fastapi", "nextjs", "react", "render", "archunitpython", "monorepo", "nx", "pnpm", "alembic", "postgresql", "scaffold", "project-setup"]
     }
   ]
 }

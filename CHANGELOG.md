@@ -2,6 +2,25 @@
 
 All notable changes to the plugins are documented here.
 
+## fullstack-project-setup 1.2.0 — 2026-09-16
+
+New locked architecture decision #16 — backend architecture standardization with ArchUnitPython:
+
+- **ArchUnitPython (`archunitpython>=1.7.0`) integration**: Architecture test platform added to Python backend test suite (`backend/tests/test_architecture.py`), executed natively via `pytest`.
+- **Zero cycle detection**: `project_files("app/").should().have_no_cycles()`.
+- **Layer boundary enforcement**: `app.core` infrastructure is strictly prevented from depending on domain feature slices in `app.features`.
+- **1000-line metric assertion**: `metrics("app/").count().lines_of_code().should_be_below(1000)` running natively in pytest with full diagnostics.
+- Templates updated: `backend/pyproject.toml`, `backend/tests/test_architecture.py`, `root/CLAUDE.md.template`.
+
+## fullstack-render-web-setup 1.0.0 — 2026-09-16
+
+Initial release of Render-focused full-stack web scaffolding plugin:
+
+- **Render deployment blueprint (`render.yaml`)**: Preconfigured for Render Web Service (frontend), Render Web Service (FastAPI), and Render Managed PostgreSQL (`pgvector`, `pgcrypto`).
+- **Web-only stack**: Removed all React Native / mobile dependencies (`apps/native`, Metro, Expo, NativeWind, Babel, `jest-expo`, `EXPO_PUBLIC_*`).
+- **ArchUnitPython integration**: Full architecture testing guardrails included out of the box.
+- **Render database URL handling**: Automatic normalization of Render's `postgres://` / `postgresql://` connection strings to `postgresql+asyncpg://`.
+
 ## fullstack-project-setup 1.1.0 — 2026-09-10
 
 New locked architecture decision #15 — styling:

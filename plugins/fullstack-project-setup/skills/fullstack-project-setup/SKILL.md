@@ -26,7 +26,7 @@ drift apart. Full rationale and the honest self-checks/risks for every
 decision live in `reference/architecture-decisions.md`; read that before
 changing anything, not just this summary.
 
-**Last verified:** 2026-09-10. Pinned tool versions live inline in the
+**Last verified:** 2026-09-16. Pinned tool versions live inline in the
 `templates/` files themselves (`package.json`, `pyproject.toml`) — check
 those are still current major versions before scaffolding a new project;
 static templates go stale silently otherwise.
@@ -145,6 +145,16 @@ static templates go stale silently otherwise.
     `templates/apps/native/`. Tailwind majors diverge per platform (web v4,
     native v3, which NativeWind v4 is built against) — that's decision #14,
     not a bug to unify.
+16. **Backend architecture standardization:** ArchUnitPython (`archunitpython`)
+    in `backend/tests/test_architecture.py`. Matches Nx's module-boundary
+    enforcement on the JS/TS side with static AST-based architecture rules in
+    Python. Hard rules checked via `pytest`:
+    - Zero dependency cycles (`project_files("app/").should().have_no_cycles()`).
+    - Layer boundary integrity: `app/core/` (cross-cutting DB session, config,
+      errors) must never depend on domain feature slices in `app/features/`.
+    - Metric-based 1000-line file limit:
+      `metrics("app/").count().lines_of_code().should_be_below(1000)` running
+      directly as a pytest assertion.
 
 ## When invoked (scaffolding a new project)
 
@@ -174,7 +184,8 @@ static templates go stale silently otherwise.
    `pyproject.toml`).
 6. **Smoke-test the scaffold before declaring done:** run the web and
    backend test suites (they should pass with the bundled `todos` slice's
-   tests), run the lint/module-boundary check, run the file-length check.
+   tests and `pytest tests/test_architecture.py` for ArchUnitPython checks),
+   run the lint/module-boundary check, run the file-length check.
    A skill that scaffolds a broken starting point is worse than no skill.
 7. Report manual follow-ups explicitly rather than silently skipping them:
    Azure PostgreSQL Flexible Server provisioning, real secrets (never
